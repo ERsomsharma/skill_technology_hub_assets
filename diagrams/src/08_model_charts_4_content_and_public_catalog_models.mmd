@@ -1,0 +1,89 @@
+﻿erDiagram
+    PAGE {
+        int id PK
+        string title
+        string slug UK
+        string page_type UK
+        bool is_published
+    }
+
+    TRUSTED_COMPANY {
+        int id PK
+        string name
+        string url
+        bool is_active
+        int sort_order
+    }
+
+    POST_CATEGORY {
+        int id PK
+        string name
+        string slug UK
+    }
+
+    POST {
+        int id PK
+        int category_id FK
+        string title
+        string slug UK
+        string status
+        datetime published_at
+    }
+
+    TEMPLATE_CATEGORY {
+        int id PK
+        string name
+        string slug UK
+    }
+
+    TEMPLATE_ITEM {
+        int id PK
+        int category_id FK
+        string name
+        string slug UK
+        string pricing_type
+        string status
+    }
+
+    TEAM_MEMBER {
+        int id PK
+        string name
+        string slug UK
+        string designation
+        bool is_active
+    }
+
+    PROJECT_CATEGORY {
+        int id PK
+        string name
+        string slug UK
+    }
+
+    PROJECT {
+        int id PK
+        int category_id FK
+        string title
+        string slug UK
+        string status
+        bool is_featured
+    }
+
+    PROJECT_IMAGE {
+        int id PK
+        int project_id FK
+        string caption
+    }
+
+    PORTFOLIO_ITEM {
+        int id PK
+        int project_id FK
+        string title
+        string slug UK
+        bool is_featured
+    }
+
+    POST_CATEGORY ||--o{ POST : classifies
+    TEMPLATE_CATEGORY ||--o{ TEMPLATE_ITEM : classifies
+    PROJECT_CATEGORY ||--o{ PROJECT : classifies
+    PROJECT ||--o{ PROJECT_IMAGE : has_gallery
+    PROJECT ||--o{ PORTFOLIO_ITEM : showcased_as

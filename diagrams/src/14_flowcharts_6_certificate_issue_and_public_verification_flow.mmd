@@ -1,0 +1,26 @@
+﻿flowchart TD
+    A[Eligibility check for enrollment] --> B{Confirmed enrollment plus paid order?}
+    B -- No --> C[Not eligible]
+    B -- Yes --> D[Compute attendance and assignment rates]
+    D --> E{Meets thresholds?}
+    E -- No --> C
+    E -- Yes --> F{Certificate already exists?}
+    F -- Yes --> G[Reuse existing certificate]
+    F -- No --> H[Create TraineeCertificate]
+    H --> I[Build certificate number]
+    G --> J[Build token plus verification code]
+    I --> J
+    J --> K[Render trainee certificate and downloadable PDF]
+
+    L[Public verify form] --> M{Token provided?}
+    M -- Yes --> N[Resolve certificate from signed token]
+    M -- No --> O{Number plus code provided?}
+    O -- No --> P[Prompt for both fields]
+    O -- Yes --> Q[Resolve certificate by number and derived code]
+    N --> R{Found in primary DB?}
+    Q --> R
+    R -- Yes --> S[Render valid certificate details]
+    R -- No --> T[Try legacy SQLite fallback]
+    T --> U{Legacy match found?}
+    U -- Yes --> S
+    U -- No --> V[Show invalid certificate message]

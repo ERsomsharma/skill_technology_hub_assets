@@ -1,0 +1,59 @@
+﻿flowchart LR
+    subgraph External
+        E1[Visitor]
+        E2[Trainee]
+        E3[Customer]
+        E4[Admin]
+        E5[Razorpay]
+        E6[SMTP Provider]
+        E7[Certificate Verifier]
+    end
+
+    subgraph Core Processes
+        P1((P1 Content and Catalog))
+        P2((P2 Identity and Access))
+        P3((P3 Training, Enrollment, Payments))
+        P4((P4 Customer Services and Billing))
+        P5((P5 Certificate Issuance and Verification))
+        P6((P6 Admin Ops, Notifications, Security))
+    end
+
+    subgraph Data Stores
+        D1[(D1 CMS Data)]
+        D2[(D2 User and Profile Data)]
+        D3[(D3 Training and Learning Data)]
+        D4[(D4 Payment and Invoice Data)]
+        D5[(D5 Certificate Data)]
+        D6[(D6 Support, Logs, Notifications)]
+    end
+
+    E1 --> P1
+    E2 --> P2
+    E2 --> P3
+    E2 --> P5
+    E3 --> P2
+    E3 --> P4
+    E4 --> P6
+    E7 --> P5
+
+    P1 <--> D1
+    P2 <--> D2
+    P3 <--> D3
+    P3 <--> D4
+    P4 <--> D4
+    P4 <--> D6
+    P5 <--> D5
+    P5 <--> D3
+    P6 <--> D1
+    P6 <--> D2
+    P6 <--> D3
+    P6 <--> D4
+    P6 <--> D5
+    P6 <--> D6
+
+    P3 <--> E5
+    P4 <--> E5
+    P2 <--> E6
+    P3 <--> E6
+    P4 <--> E6
+    P6 <--> E6

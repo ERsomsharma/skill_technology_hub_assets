@@ -1,0 +1,22 @@
+﻿flowchart TD
+    A[Trainee opens batch detail] --> B[Click enroll]
+    B --> C{Pricing configured and seats available?}
+    C -- No --> D[Show error and stop]
+    C -- Yes --> E{Existing enrollment pending or confirmed?}
+    E -- Confirmed --> F[Redirect my enrollments]
+    E -- Pending --> G[Redirect checkout existing]
+    E -- No --> H[Create pending Enrollment]
+    H --> I[Checkout]
+    I --> J{Existing created order fresh?}
+    J -- No --> K[Create Razorpay order]
+    K --> L[Create Order row]
+    J -- Yes --> M[Reuse order]
+    L --> N[Client pays on gateway]
+    M --> N
+    N --> O[POST verify payment]
+    O --> P{Signature valid and order payable?}
+    P -- No --> Q[Return payment failed]
+    P -- Yes --> R[Mark order paid]
+    R --> S[Confirm enrollment]
+    S --> T[Send payment and enrollment notifications]
+    T --> U[Redirect success page]

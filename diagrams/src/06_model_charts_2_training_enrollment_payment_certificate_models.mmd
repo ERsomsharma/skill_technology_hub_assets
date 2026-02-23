@@ -1,0 +1,100 @@
+﻿erDiagram
+    TRAINING_BATCH {
+        int id PK
+        string title
+        date start_date
+        string status
+        bool is_featured
+    }
+
+    BATCH_PRICE {
+        int id PK
+        int batch_id FK
+        decimal original_price
+        decimal discounted_price
+        int max_students
+    }
+
+    ENROLLMENT {
+        uuid id PK
+        int user_id FK
+        int batch_id FK
+        string status
+        string name
+        string email
+        datetime enrolled_at
+        datetime confirmed_at
+    }
+
+    ORDER {
+        uuid id PK
+        uuid enrollment_id FK
+        int user_id FK
+        string order_id UK
+        string invoice_number UK
+        decimal amount
+        string status
+        string payment_id
+        datetime paid_at
+    }
+
+    TRAINEE_SESSION {
+        int id PK
+        int batch_id FK
+        string title
+        datetime scheduled_at
+        string status
+    }
+
+    TRAINEE_ATTENDANCE {
+        int id PK
+        int session_id FK
+        int trainee_id FK
+        string status
+    }
+
+    TRAINEE_ASSIGNMENT {
+        int id PK
+        int batch_id FK
+        string title
+        date due_date
+        string status
+    }
+
+    TRAINEE_ASSIGNMENT_SUBMISSION {
+        int id PK
+        int assignment_id FK
+        int trainee_id FK
+        string status
+        decimal score
+        datetime submitted_at
+    }
+
+    TRAINEE_CERTIFICATE {
+        int id PK
+        int trainee_id FK
+        uuid enrollment_id FK
+        string certificate_number UK
+        datetime issued_at
+    }
+
+    AUTH_USER {
+        int id PK
+    }
+
+    TRAINING_BATCH ||--|| BATCH_PRICE : has_pricing
+    AUTH_USER ||--o{ ENROLLMENT : creates
+    TRAINING_BATCH ||--o{ ENROLLMENT : receives
+    ENROLLMENT ||--|| ORDER : has_order
+    AUTH_USER ||--o{ ORDER : pays
+
+    TRAINING_BATCH ||--o{ TRAINEE_SESSION : schedules
+    TRAINEE_SESSION ||--o{ TRAINEE_ATTENDANCE : records
+    AUTH_USER ||--o{ TRAINEE_ATTENDANCE : attends
+
+    TRAINING_BATCH ||--o{ TRAINEE_ASSIGNMENT : includes
+    TRAINEE_ASSIGNMENT ||--o{ TRAINEE_ASSIGNMENT_SUBMISSION : collects
+    AUTH_USER ||--o{ TRAINEE_ASSIGNMENT_SUBMISSION : submits
+
+    AUTH_USER ||--o{ TRAINEE_CERTIFICATE : awarded_to
+    ENROLLMENT ||--|| TRAINEE_CERTIFICATE : certificate_for

@@ -1,0 +1,52 @@
+# Skill Technology Hub - Architecture Wiremap
+
+Source snapshot: `skill_technology_hub` (Django project)
+Generated on: 2026-02-23
+
+## Master Wiremap
+
+```mermaid
+flowchart LR
+    ROOT((Skill Technology Hub<br/>Architecture Map))
+
+    ROOT --> DFD[DFD Package]
+    ROOT --> ERD[Model Chart Package]
+    ROOT --> FLOWS[Flowchart Package]
+
+    DFD --> DFD0[DFD L0 Context]
+    DFD --> DFD1[DFD L1 Decomposition]
+    DFD --> DFD2A[DFD L2 Training and Payments]
+    DFD --> DFD2B[DFD L2 Certificate Verify]
+
+    ERD --> ERD1[Identity and Notification ERD]
+    ERD --> ERD2[Training and Payments ERD]
+    ERD --> ERD3[Customer Billing ERD]
+    ERD --> ERD4[Content and Catalog ERD]
+
+    FLOWS --> F1[Registration and Verification]
+    FLOWS --> F2[Reverification]
+    FLOWS --> F3[Admin OTP Login]
+    FLOWS --> F4[Enrollment and Payment Verify]
+    FLOWS --> F5[Invoice Payment]
+    FLOWS --> F6[Certificate Issue and Public Verify]
+
+    classDef root fill:#082f49,stroke:#22d3ee,color:#e0f2fe,stroke-width:2px;
+    classDef pack fill:#1e1b4b,stroke:#a78bfa,color:#f5f3ff,stroke-width:1px;
+    classDef node fill:#111827,stroke:#374151,color:#e5e7eb,stroke-width:1px;
+
+    class ROOT root;
+    class DFD,ERD,FLOWS pack;
+    class DFD0,DFD1,DFD2A,DFD2B,ERD1,ERD2,ERD3,ERD4,F1,F2,F3,F4,F5,F6 node;
+```
+
+## Coverage Matrix
+
+| Package | Diagram Count | Source File |
+|---|---:|---|
+| DFD | 4 | `doc/DFD.md` |
+| Model Charts (ERD) | 4 | `doc/MODEL_CHARTS.md` |
+| Flowcharts | 6 | `doc/FLOWCHARTS.md` |
+| Wiremap | 1 | `doc/ARCHITECTURE_WIREMAP.md` |
+
+Total diagrams: 15
+

@@ -1,0 +1,14 @@
+﻿flowchart TD
+    A[Admin submits login credentials] --> B{Credentials valid?}
+    B -- No --> X[Show login error]
+    B -- Yes --> C[Generate 6 digit OTP]
+    C --> D[Store OTP plus expiry in session]
+    D --> E[Send OTP email]
+    E --> F[Open OTP verify page]
+    F --> G{OTP session valid and not expired?}
+    G -- No --> H[Clear session and ask login again]
+    G -- Yes --> I{Entered OTP matches?}
+    I -- No --> J[Show invalid OTP]
+    I -- Yes --> K[Login admin user]
+    K --> L[Clear OTP session]
+    L --> M[Redirect admin-zone dashboard]

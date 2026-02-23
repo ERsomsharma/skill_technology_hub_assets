@@ -1,0 +1,56 @@
+﻿erDiagram
+    AUTH_USER {
+        int id PK
+        string username
+        string email
+        bool is_staff
+        bool is_superuser
+    }
+
+    ROLE {
+        int id PK
+        string name UK
+        bool is_active
+    }
+
+    USER_PROFILE {
+        int id PK
+        int user_id FK
+        int role_id FK
+        string user_type
+        string phone
+        string company_name
+        bool is_email_verified
+        string email_verification_token
+    }
+
+    NOTIFICATION_PREFERENCE {
+        int id PK
+        int user_id FK
+        bool in_app_enabled
+        bool email_enabled
+    }
+
+    USER_NOTIFICATION {
+        int id PK
+        int user_id FK
+        string title
+        string notification_type
+        bool is_read
+        datetime created_at
+    }
+
+    EMAIL_DELIVERY_LOG {
+        int id PK
+        int user_id FK
+        string recipient_email
+        string category
+        string status
+        datetime created_at
+    }
+
+    AUTH_USER ||--o| USER_PROFILE : has
+    ROLE ||--o{ USER_PROFILE : assigned_to
+    AUTH_USER ||--o| NOTIFICATION_PREFERENCE : has
+    AUTH_USER ||--o{ USER_NOTIFICATION : receives
+    AUTH_USER ||--o{ EMAIL_DELIVERY_LOG : owns

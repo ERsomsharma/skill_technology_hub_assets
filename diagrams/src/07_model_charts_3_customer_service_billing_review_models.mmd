@@ -1,0 +1,70 @@
+﻿erDiagram
+    SERVICE_PACKAGE {
+        int id PK
+        string name
+        string tier
+        decimal price
+        bool is_active
+    }
+
+    APPOINTMENT {
+        int id PK
+        int customer_id FK
+        int assigned_to_id FK
+        string service_type
+        string status
+        string title
+        datetime scheduled_date
+        decimal cost
+        bool is_paid
+    }
+
+    INVOICE {
+        int id PK
+        string invoice_number UK
+        int customer_id FK
+        int appointment_id FK
+        decimal total_amount
+        string status
+        date due_date
+        date paid_date
+    }
+
+    INVOICE_PAYMENT {
+        uuid id PK
+        int invoice_id FK
+        int user_id FK
+        string order_id UK
+        string payment_id
+        decimal amount
+        string status
+        datetime paid_at
+    }
+
+    REVIEW {
+        int id PK
+        int reviewer_id FK
+        int related_appointment_id FK
+        int related_service_id FK
+        int moderated_by_id FK
+        string reviewer_type
+        int rating
+        string status
+        datetime created_at
+    }
+
+    AUTH_USER {
+        int id PK
+    }
+
+    AUTH_USER ||--o{ APPOINTMENT : requests
+    AUTH_USER ||--o{ APPOINTMENT : assigned
+    APPOINTMENT ||--o| INVOICE : billed_as
+    AUTH_USER ||--o{ INVOICE : billed_to
+    INVOICE ||--o{ INVOICE_PAYMENT : paid_by_records
+    AUTH_USER ||--o{ INVOICE_PAYMENT : submits
+
+    AUTH_USER ||--o{ REVIEW : writes
+    AUTH_USER ||--o{ REVIEW : moderates
+    APPOINTMENT ||--o{ REVIEW : reviewed_in
+    SERVICE_PACKAGE ||--o{ REVIEW : reviewed_package

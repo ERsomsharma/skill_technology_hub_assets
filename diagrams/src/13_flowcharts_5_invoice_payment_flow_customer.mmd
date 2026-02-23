@@ -1,0 +1,16 @@
+﻿flowchart TD
+    A[Customer opens invoice checkout] --> B{Invoice payable?}
+    B -- No --> C[Redirect invoice detail with reason]
+    B -- Yes --> D{Created payment exists and fresh?}
+    D -- No --> E[Create Razorpay order]
+    E --> F[Create InvoicePayment row]
+    D -- Yes --> G[Reuse payment row]
+    F --> H[Customer pays]
+    G --> H
+    H --> I[POST verify invoice payment]
+    I --> J{Signature valid and still payable?}
+    J -- No --> K[Return failure]
+    J -- Yes --> L[Mark invoice payment paid]
+    L --> M[Set Invoice status paid and paid_date]
+    M --> N[If linked appointment set is_paid true]
+    N --> O[Redirect invoice detail success]

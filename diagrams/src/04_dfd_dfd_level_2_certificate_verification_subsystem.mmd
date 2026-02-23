@@ -1,0 +1,28 @@
+﻿flowchart TD
+    TV[Trainee Certificate View]
+    DL[Certificate Download PDF]
+    VF[Public Verify Form]
+    TK((Verify by Token))
+    MC((Verify by Number and Code))
+    LEG((Legacy SQLite Fallback))
+    RES[Verification Result Page]
+
+    C1[(TraineeCertificate)]
+    C2[(Enrollment plus Batch plus User)]
+    C3[(Legacy SQLite DB optional)]
+
+    TV --> C1
+    TV --> C2
+    DL --> C1
+    DL --> C2
+
+    VF --> TK
+    VF --> MC
+    TK --> C1
+    MC --> C1
+    TK --> LEG
+    MC --> LEG
+    LEG --> C3
+    C1 --> RES
+    C2 --> RES
+    C3 --> RES

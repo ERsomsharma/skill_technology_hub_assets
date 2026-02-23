@@ -1,0 +1,14 @@
+﻿flowchart TD
+    A[User requests resend or reverification] --> B{Authenticated profile flow?}
+    B -- Public resend form --> C[Find UserProfile by email]
+    C --> D{Profile exists and unverified?}
+    D -- No --> E[Generic safe response or already verified]
+    D -- Yes --> F
+    B -- Authenticated profile flow --> F[Load current user profile]
+    F --> G{Cooldown active < 60s?}
+    G -- Yes --> H[Inform wait seconds left]
+    G -- No --> I[Generate new token and sent_at]
+    I --> J[Send verification email]
+    J --> K{Send success?}
+    K -- Yes --> L[Show success message]
+    K -- No --> M[Show temporary delivery error]

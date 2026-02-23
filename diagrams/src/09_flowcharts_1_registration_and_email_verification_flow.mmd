@@ -1,0 +1,15 @@
+﻿flowchart TD
+    A[User submits registration form] --> B[Create auth user]
+    B --> C[Create or update UserProfile]
+    C --> D[Generate verification token plus sent_at]
+    D --> E[Send verification email]
+    E --> F[User opens verify-email token link]
+    F --> G{Token profile found?}
+    G -- No --> H[Show invalid or used link]
+    G -- Yes --> I{Already verified?}
+    I -- Yes --> J[Show already verified]
+    I -- No --> K{Link expired > 48h?}
+    K -- Yes --> L[Show expired and allow resend]
+    K -- No --> M[Set is_email_verified true]
+    M --> N[Clear token plus sent_at]
+    N --> O[Show success and allow login]

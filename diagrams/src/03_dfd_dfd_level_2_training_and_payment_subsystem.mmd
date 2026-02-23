@@ -1,0 +1,32 @@
+﻿flowchart TD
+    U[Trainee User]
+    B[Training Batch Detail]
+    EN((Create Enrollment))
+    CO((Checkout))
+    RP[Razorpay Order API]
+    VP((Verify Payment))
+    WH((Webhook Handler))
+    MY[My Enrollments Page]
+
+    S1[(TrainingBatch, BatchPrice)]
+    S2[(Enrollment)]
+    S3[(Order)]
+    S4[(UserNotification, EmailDeliveryLog)]
+
+    U --> B --> EN
+    EN --> S2
+    EN --> CO
+    CO --> S1
+    CO --> S2
+    CO --> RP
+    RP --> S3
+    U --> VP
+    VP --> S3
+    VP --> S2
+    VP --> S4
+    RP --> WH
+    WH --> S3
+    WH --> S2
+    WH --> S4
+    S2 --> MY
+    S3 --> MY

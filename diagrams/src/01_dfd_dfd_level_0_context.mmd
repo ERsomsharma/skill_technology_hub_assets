@@ -1,0 +1,22 @@
+﻿flowchart LR
+    visitor[Visitor]
+    trainee[Trainee]
+    customer[Customer]
+    admin[Admin Team]
+    gateway[Razorpay Gateway]
+    email[Email Provider SMTP]
+    verifier[Certificate Verifier]
+
+    system((Skill Technology Hub Platform))
+
+    visitor -->|Browse services/templates/projects/news| system
+    trainee -->|Register, login, enroll, submit reviews| system
+    customer -->|Request services, pay invoices, review| system
+    admin -->|Manage content, users, invoices, support| system
+    verifier -->|Token/manual certificate checks| system
+
+    system -->|Order create/verify webhook| gateway
+    gateway -->|Payment status/signature| system
+
+    system -->|Transactional emails| email
+    email -->|Delivery status| system

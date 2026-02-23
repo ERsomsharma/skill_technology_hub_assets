@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Technology Hub - Architecture Wiremap</title>
+    <style>
+        :root {
+            --bg: #030712;
+            --surface: #0f172a;
+            --surface-soft: #111827;
+            --line: #334155;
+            --text: #e5e7eb;
+            --muted: #94a3b8;
+            --aqua: #22d3ee;
+            --violet: #a78bfa;
+            --pink: #f472b6;
+            --green: #34d399;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background:
+                radial-gradient(circle at 15% 10%, rgba(34, 211, 238, 0.08), transparent 28%),
+                radial-gradient(circle at 85% 20%, rgba(167, 139, 250, 0.08), transparent 30%),
+                linear-gradient(180deg, #020617 0%, #030712 100%);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .page {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 28px 24px 40px;
+        }
+
+        .header {
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            background: rgba(15, 23, 42, 0.75);
+            border-radius: 18px;
+            padding: 18px 22px;
+            backdrop-filter: blur(8px);
+            margin-bottom: 18px;
+        }
+
+        .kicker {
+            margin: 0;
+            color: var(--aqua);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+        }
+
+        .title {
+            margin: 8px 0 6px;
+            font-size: clamp(28px, 4vw, 44px);
+            line-height: 1.1;
+            font-weight: 800;
+        }
+
+        .sub {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .nav {
+            margin: 14px 0 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .nav a {
+            text-decoration: none;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            font-weight: 700;
+            color: #dbeafe;
+            border: 1px solid rgba(147, 197, 253, 0.35);
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.4);
+        }
+
+        .canvas {
+            position: relative;
+            min-height: 980px;
+            border-radius: 20px;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            background:
+                linear-gradient(to right, rgba(148, 163, 184, 0.12) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(148, 163, 184, 0.12) 1px, transparent 1px),
+                rgba(2, 6, 23, 0.7);
+            background-size: 28px 28px, 28px 28px, auto;
+            overflow: hidden;
+        }
+
+        svg.wires {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .wire {
+            fill: none;
+            stroke: rgba(148, 163, 184, 0.35);
+            stroke-width: 2;
+        }
+
+        .node {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            border-radius: 14px;
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            background: rgba(15, 23, 42, 0.88);
+            min-width: 240px;
+            max-width: 340px;
+            padding: 12px 14px;
+            box-shadow: 0 14px 36px rgba(2, 6, 23, 0.6);
+        }
+
+        .node h3 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+        }
+
+        .node p {
+            margin: 6px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .node ul {
+            margin: 8px 0 0;
+            padding-left: 16px;
+        }
+
+        .node li {
+            margin: 4px 0;
+            font-size: 12px;
+            color: #cbd5e1;
+        }
+
+        .node a {
+            color: #bae6fd;
+            text-decoration: none;
+        }
+
+        .node a:hover {
+            text-decoration: underline;
+        }
+
+        .root {
+            border-color: rgba(34, 211, 238, 0.6);
+            background: linear-gradient(145deg, rgba(8, 47, 73, 0.95), rgba(15, 23, 42, 0.9));
+            min-width: 300px;
+        }
+
+        .pkg-dfd {
+            border-color: rgba(167, 139, 250, 0.55);
+        }
+
+        .pkg-model {
+            border-color: rgba(244, 114, 182, 0.55);
+        }
+
+        .pkg-flow {
+            border-color: rgba(52, 211, 153, 0.55);
+        }
+
+        .footer {
+            margin-top: 16px;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 14px;
+            background: rgba(15, 23, 42, 0.7);
+            padding: 12px 14px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        @media (max-width: 1200px) {
+            .canvas {
+                min-height: 1180px;
+            }
+            .node {
+                min-width: 220px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <section class="header">
+            <p class="kicker">Architecture Navigator</p>
+            <h1 class="title">Skill Technology Hub Visual Wiremap</h1>
+            <p class="sub">Single map for DFDs, Model Charts, and Flowcharts with direct links to source and exports.</p>
+            <div class="nav">
+                <a href="./ARCHITECTURE.md">Architecture Index</a>
+                <a href="./DFD.md">DFD Source</a>
+                <a href="./MODEL_CHARTS.md">Model Charts Source</a>
+                <a href="./FLOWCHARTS.md">Flowcharts Source</a>
+                <a href="./ARCHITECTURE_WIREMAP.md">Mermaid Wiremap Source</a>
+            </div>
+        </section>
+
+        <section class="canvas">
+            <svg class="wires" viewBox="0 0 1400 980" preserveAspectRatio="none" aria-hidden="true">
+                <path class="wire" d="M700 120 C700 210, 290 180, 290 260"></path>
+                <path class="wire" d="M700 120 C700 210, 700 180, 700 260"></path>
+                <path class="wire" d="M700 120 C700 210, 1110 180, 1110 260"></path>
+
+                <path class="wire" d="M290 260 C290 360, 200 420, 200 500"></path>
+                <path class="wire" d="M290 260 C290 360, 390 420, 390 500"></path>
+
+                <path class="wire" d="M700 260 C700 360, 610 420, 610 500"></path>
+                <path class="wire" d="M700 260 C700 360, 790 420, 790 500"></path>
+
+                <path class="wire" d="M1110 260 C1110 360, 1020 420, 1020 500"></path>
+                <path class="wire" d="M1110 260 C1110 360, 1200 420, 1200 500"></path>
+            </svg>
+
+            <article class="node root" style="left: 700px; top: 120px;">
+                <h3>Architecture Pack</h3>
+                <p>15 diagrams exported to SVG and PNG</p>
+                <ul>
+                    <li><a href="./ARCHITECTURE.md">Open architecture index</a></li>
+                    <li><a href="./diagrams/png/15_architecture_wiremap_master_wiremap.png">Open master wiremap PNG</a></li>
+                </ul>
+            </article>
+
+            <article class="node pkg-dfd" style="left: 290px; top: 260px;">
+                <h3>DFD Package</h3>
+                <p>4 diagrams: context to subsystem level</p>
+                <ul>
+                    <li><a href="./DFD.md">Source markdown</a></li>
+                    <li><a href="./diagrams/svg/01_dfd_dfd_level_0_context.svg">L0 context SVG</a></li>
+                    <li><a href="./diagrams/svg/02_dfd_dfd_level_1_process_decomposition.svg">L1 decomposition SVG</a></li>
+                </ul>
+            </article>
+
+            <article class="node pkg-model" style="left: 700px; top: 260px;">
+                <h3>Model Charts Package</h3>
+                <p>4 ERD charts by domain</p>
+                <ul>
+                    <li><a href="./MODEL_CHARTS.md">Source markdown</a></li>
+                    <li><a href="./diagrams/svg/05_model_charts_1_identity_access_notification_models.svg">Identity ERD SVG</a></li>
+                    <li><a href="./diagrams/svg/06_model_charts_2_training_enrollment_payment_certificate_models.svg">Training ERD SVG</a></li>
+                </ul>
+            </article>
+
+            <article class="node pkg-flow" style="left: 1110px; top: 260px;">
+                <h3>Flowcharts Package</h3>
+                <p>6 process flows for key journeys</p>
+                <ul>
+                    <li><a href="./FLOWCHARTS.md">Source markdown</a></li>
+                    <li><a href="./diagrams/svg/09_flowcharts_1_registration_and_email_verification_flow.svg">Registration flow SVG</a></li>
+                    <li><a href="./diagrams/svg/14_flowcharts_6_certificate_issue_and_public_verification_flow.svg">Certificate flow SVG</a></li>
+                </ul>
+            </article>
+
+            <article class="node" style="left: 200px; top: 500px;">
+                <h3>DFD Subsystem A</h3>
+                <p>Training + payment data movement</p>
+                <ul>
+                    <li><a href="./diagrams/png/03_dfd_dfd_level_2_training_and_payment_subsystem.png">PNG export</a></li>
+                    <li><a href="./diagrams/svg/03_dfd_dfd_level_2_training_and_payment_subsystem.svg">SVG export</a></li>
+                </ul>
+            </article>
+
+            <article class="node" style="left: 390px; top: 500px;">
+                <h3>DFD Subsystem B</h3>
+                <p>Certificate verification path</p>
+                <ul>
+                    <li><a href="./diagrams/png/04_dfd_dfd_level_2_certificate_verification_subsystem.png">PNG export</a></li>
+                    <li><a href="./diagrams/svg/04_dfd_dfd_level_2_certificate_verification_subsystem.svg">SVG export</a></li>
+                </ul>
+            </article>
+
+            <article class="node" style="left: 610px; top: 500px;">
+                <h3>Model ERD A-B</h3>
+                <p>Identity + training and payment schemas</p>
+                <ul>
+                    <li><a href="./diagrams/png/05_model_charts_1_identity_access_notification_models.png">Identity PNG</a></li>
+                    <li><a href="./diagrams/png/06_model_charts_2_training_enrollment_payment_certificate_models.png">Training PNG</a></li>
+                </ul>
+            </article>
+
+            <article class="node" style="left: 790px; top: 500px;">
+                <h3>Model ERD C-D</h3>
+                <p>Customer billing + content catalogs</p>
+                <ul>
+                    <li><a href="./diagrams/png/07_model_charts_3_customer_service_billing_review_models.png">Billing PNG</a></li>
+                    <li><a href="./diagrams/png/08_model_charts_4_content_and_public_catalog_models.png">Catalog PNG</a></li>
+                </ul>
+            </article>
+
+            <article class="node" style="left: 1020px; top: 500px;">
+                <h3>Flow A-C</h3>
+                <p>Registration, reverification, admin OTP</p>
+                <ul>
+                    <li><a href="./diagrams/png/09_flowcharts_1_registration_and_email_verification_flow.png">Registration PNG</a></li>
+                    <li><a href="./diagrams/png/10_flowcharts_2_reverification_flow_profile_or_resend.png">Reverification PNG</a></li>
+                    <li><a href="./diagrams/png/11_flowcharts_3_admin_login_otp_flow.png">Admin OTP PNG</a></li>
+                </ul>
+            </article>
+
+            <article class="node" style="left: 1200px; top: 500px;">
+                <h3>Flow D-F</h3>
+                <p>Enrollment pay, invoice pay, certificates</p>
+                <ul>
+                    <li><a href="./diagrams/png/12_flowcharts_4_trainee_enrollment_and_payment_verification_flow.png">Enrollment PNG</a></li>
+                    <li><a href="./diagrams/png/13_flowcharts_5_invoice_payment_flow_customer.png">Invoice PNG</a></li>
+                    <li><a href="./diagrams/png/14_flowcharts_6_certificate_issue_and_public_verification_flow.png">Certificate PNG</a></li>
+                </ul>
+            </article>
+        </section>
+
+        <section class="footer">
+            Diagram source files are under <code>doc/diagrams/src</code>. Exported assets are under
+            <code>doc/diagrams/svg</code> and <code>doc/diagrams/png</code>.
+        </section>
+    </main>
+</body>
+</html>
+
